@@ -9,3 +9,6 @@
       (lambda (argv)
         (append (list "nix-shell" "--pure" "--command")
                 (list (mapconcat 'identity argv " ")))))
+
+
+(defvar org-directory "~/.org")
