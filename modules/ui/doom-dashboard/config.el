@@ -436,9 +436,9 @@ controlled by `+doom-dashboard-pwd-policy'."
     "Powered by Aloysius")
    "\n"
    (+doom-dashboard--center
-    (- +doom-dashboard--width 2)
+    (- +doom-dashboard--width 5)
     (with-temp-buffer
-      (insert-text-button (or (all-the-icons-faicon "heart" :face 'all-the-icons-red :height 1.6 :v-adjust -0.15)
+      (insert-text-button (or (all-the-icons-faicon "heart" :face 'all-the-icons-red :height 2 :v-adjust -0.5)
                               (propertize "E M A C S" 'face 'font-lock-keyword-face))
                           'action (lambda (_) (browse-url "https://github.com/karetsu"))
                           'follow-link t
