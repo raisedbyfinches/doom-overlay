@@ -28,10 +28,5 @@
       org-bullets-bullet-list '(""))
 
 
-;; -- Lua -----------------------------------------------------------------------
-(after! moonscript
-  (require 'flycheck-moonscript))
-
-
 ;; -- Text ----------------------------------------------------------------------
 (add-hook! text-mode #'turn-on-visual-line-mode)
