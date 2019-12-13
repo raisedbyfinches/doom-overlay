@@ -5,6 +5,7 @@
 ;; -- Appearance ----------------------------------------------------------------
 (setq doom-theme 'doom-nord)
 (setq doom-font (font-spec :family "Iosevka Custom" :size 14))
+;;(setq doom-font (font-spec :family "mononoki" :size 14))
 
 
 ;; -- Haskell -------------------------------------------------------------------

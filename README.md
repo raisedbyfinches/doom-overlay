@@ -2,8 +2,8 @@ Personal overlay for [doom-emacs](https://github.com/hlissner/doom-emacs).
 
 ## Preview
 
-| Dashboard |
-|---|
+| Dashboard                                      |
+|------------------------------------------------|
 | ![Screenshot](https://i.imgur.com/OsyVGDY.png) |
 
 
