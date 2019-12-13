@@ -3,7 +3,7 @@
 ;; Place your private configuration here
 
 ;; -- Appearance ----------------------------------------------------------------
-(setq doom-theme 'doom-nord)
+(setq doom-theme 'doom-laserwave)
 (setq doom-font (font-spec :family "Iosevka Custom" :size 14))
 ;;(setq doom-font (font-spec :family "mononoki" :size 14))
 
