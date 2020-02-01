@@ -12,7 +12,3 @@
 
 ;; -- variables ----------------------------------------------------------------
 (package! imenu-list)
-(package! emacs-jupyter)
-(package! lsp-julia)
-
-(package! doom-nature-theme :recipe (:host github :repo "karetsu/doom-nature-theme"))
