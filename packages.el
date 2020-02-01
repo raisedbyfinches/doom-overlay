@@ -7,5 +7,8 @@
 ;; (package! builtin-package :disable t)
 
 ;; -- Lua -----------------------------------------------------------------------
-(package! flycheck-moonscript
-  :recipe (:host github :repo "hlissner/emacs-flycheck-moonscript"))
+;;(package! flycheck-moonscript
+;; :recipe (:host github :repo "hlissner/emacs-flycheck-moonscript"))
+
+;; -- variables ----------------------------------------------------------------
+(package! imenu-list)
