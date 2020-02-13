@@ -5,10 +5,16 @@
 ;; -- Theme ---------------------------------------------------------------------
 (setq doom-theme 'doom-horizon)
 
+;; fonts
 (setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "Regular"))
 (setq doom-big-font (font-spec :family "Iosevka Custom" :size 20 :style "Regular"))
 (setq doom-variable-pitch-font (font-spec :family "Overpass" :size 14 ))
 
+;; modeline
+(setq doom-modeline-buffer-encoding nil)
+(setq doom-modeline-major-mode-icon nil)
+(setq find-file-visit-truename t)
+(setq doom-modeline-project-detection 'ffip)
 
 ;; -- Backups -------------------------------------------------------------------
 (setq make-backup-files   t
@@ -28,7 +34,7 @@
                   (list (mapconcat 'identity argv " "))))))
 
 ;; -- Org -----------------------------------------------------------------------
-(add-hook! 'org-mode-hook (mixed-pitch-mode 1))
+;;-- (add-hook! 'org-mode-hook (mixed-pitch-mode 1)) -- doesn't play nice with modeline
 (after! org
   (add-to-list 'org-modules 'org-habit t)
   (setq jupyter-eval-uses-overlays t)
@@ -145,7 +151,7 @@
 
 
 
-;; -- Appearance ----------------------------------------------------------------
+;; -- Appearance 2: electric boogaloo  ------------------------------------------
 (setq fancy-splash-image "~/.config/doom/bill.png")
 
 (setq doom-modeline-major-mode-icon t)
@@ -174,7 +180,6 @@
   `(doom-dashboard-menu-desc :foreground ,(doom-color 'yellow))
   `(doom-dashboard-menu-title :foreground ,(doom-color 'red))
   `(doom-dashboard-loaded :inherit font-lock-comment-face)
-
 
   ;; haskell
   `(haskell-constructor-face :inherit 'bold )
