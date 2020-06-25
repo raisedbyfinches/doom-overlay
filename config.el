@@ -16,6 +16,7 @@
 (setq find-file-visit-truename t)
 (setq doom-modeline-project-detection 'ffip)
 
+
 ;; -- Backups -------------------------------------------------------------------
 (setq make-backup-files   t
       backup-by-copying   t
@@ -34,54 +35,22 @@
                   (list (mapconcat 'identity argv " "))))))
 
 ;; -- Org -----------------------------------------------------------------------
-;;-- (add-hook! 'org-mode-hook (mixed-pitch-mode 1)) -- doesn't play nice with modeline
+(add-hook! 'org-mode-hook
+  (set-fill-column 2000)
+  (+word-wrap-mode t)
+  (writeroom-mode t)
+  (writegood-mode t)
+  (mixed-pitch-mode 1))
+(add-hook! 'org-mode-hook #'doom-disable-line-numbers-h)
 (after! org
   (add-to-list 'org-modules 'org-habit t)
-  (setq jupyter-eval-uses-overlays t)
-
-  (appendq! +pretty-code-symbols
-            '(:checkbox      ""
-              :pending       ""
-              :checkedbox    ""
-              :results       ""
-              :property      ""
-              :option        "⌥"
-              :title         "𝙏"
-              :author        "𝘼"
-              :date          "𝘿"
-              :begin_quote   "❮"
-              :end_quote     "❯"
-              :begin_example "❮"
-              :end_example   "❯"
-              :em_dash       "—"))
-
-  (set-pretty-symbols! 'org-mode
-    :merge t
-    :checkbox    "[ ]"
-    :pending     "[-]"
-    :checkedbox  "[X]"
-    :results     "#+RESULTS:"
-    :property    "#+PROPERTY:"
-    :option      "#+OPTION:"
-    :title       "#+TITLE:"
-    :author      "#+AUTHOR:"
-    :date        "#+DATE:"
-    :begin_quote "#+BEGIN_QUOTE"
-    :end_quote   "#+END_QUOTE"
-    :begin_quote "#+begin_example"
-    :end_quote   "#+end_example"
-    :em_dash     "---"))
-
+  (setq jupyter-eval-uses-overlays t))
 
 ;; all the time org settings?
 (setq org-directory "~/.org/"
       org-agenda-files (list org-directory)
       org-ellipsis "  "
-
       org-hide-emphasis-markers t
-
-      ;; The standard unicode characters are usually misaligned depending on the
-      ;; font. This bugs me. Markdown #-marks for headlines are more elegant.
       org-bullets-bullet-list '(""))
 
 
@@ -126,12 +95,17 @@
       ;;; > List items
       :desc "List code items" "l" #'imenu-list-smart-toggle)
 
+;; -- popup buffer options ------------------------------------------------------
+;; (defun ivy-posframe-display-at-top (str)
+;;    (ivy-posframe--display str #'posframe-poshandler-frame-top-center))
+;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-top)))
+;; (ivy-posframe-mode 1) ; This line is needed
 
 ;; -- Tabs ----------------------------------------------------------------------
-(after! tabs
-  (setq centaur-tabs-height 40)
-  (setq centaur-tabs-set-close-button nil)
-  (centaur-tabs-group-by-projectile-project))
+;; (after! tabs
+;;   (setq centaur-tabs-height 40)
+;;   (setq centaur-tabs-set-close-button nil)
+;;   (centaur-tabs-group-by-projectile-project))
 
 
 ;; -- DOOM ----------------------------------------------------------------------
@@ -150,10 +124,8 @@
                (concat doom-emacs-dir "init.example.el")))
 
 
-
 ;; -- Appearance 2: electric boogaloo  ------------------------------------------
 (setq fancy-splash-image "~/.config/doom/bill.png")
-
 (setq doom-modeline-major-mode-icon t)
 
 (defun doom-dashboard-widget-footer ()
@@ -177,14 +149,43 @@
 
   ;; doom
   `(doom-dashboard-footer-icon :foreground ,(doom-color 'red))
-  `(doom-dashboard-menu-desc :foreground ,(doom-color 'yellow))
-  `(doom-dashboard-menu-title :foreground ,(doom-color 'red))
-  `(doom-dashboard-loaded :inherit font-lock-comment-face)
+  `(doom-dashboard-menu-desc   :foreground ,(doom-color 'yellow))
+  `(doom-dashboard-menu-title  :foreground ,(doom-color 'red))
+  `(doom-dashboard-loaded      :inherit font-lock-comment-face)
 
   ;; haskell
-  `(haskell-constructor-face :inherit 'bold )
-  `(haskell-keyword-face :inherit 'italic :foreground ,(doom-color 'keywords))
-  `(haskell-definition-face :inherit 'bold :foreground ,(doom-color 'orange))
-  `(haskell-operator-face :foreground ,(doom-color 'base4))
+  `(haskell-constructor-face   :inherit 'bold)
+  `(haskell-keyword-face       :inherit 'italic :foreground ,(doom-color 'keywords))
+  `(haskell-definition-face    :inherit 'bold :foreground ,(doom-color 'red))
+  `(haskell-operator-face      :foreground ,(doom-color 'base4))
 
+  ;; other appearance
+  `(solaire-mode-line-inactive-face :background ,(doom-color 'bg) :foreground ,(doom-color 'bg-alt))
+  `(doom-modeline-icon-inactive :background ,(doom-color 'bg-alt) :foreground ,(doom-color 'bg-alt))
+  `(ivy-posframe :background ,(doom-darken (doom-color 'bg) 0.1))
+  `(company-box-background :background ,(doom-darken (doom-color 'bg) 0.1))
   )
+
+
+
+'fix' Dante
+(defcustom dante-methods-alist
+  `((styx "styx.yaml" ("styx" "repl" dante-target))
+    ; (snack ,(lambda (d) (directory-files d t "package\\.\\(yaml\\|nix\\)")) ("snack" "ghci" dante-target)) ; too easy to trigger, confuses too many people.
+    (new-impure-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
+    ;; (new-nix dante-cabal-new-nix ("nix-shell" "--pure" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
+    ;; (nix dante-cabal-nix ("nix-shell" "--pure" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
+    (new-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
+    (nix dante-cabal-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
+    (impure-nix dante-cabal-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
+    (new-build "cabal.project.local" ("cabal" "new-repl" (or dante-target (dante-package-name) nil) "--builddir=dist/dante"))
+    ;; (nix-ghci ,(lambda (d) (directory-files d t "shell.nix\\|default.nix")) ("nix-shell" "--pure" "--run" "ghci"))
+    (nix-ghci ,(lambda (d) (directory-files d t "shell.nix\\|default.nix")) ("nix-shell" "--run" "ghci"))
+    (stack "stack.yaml" ("stack" "repl" dante-target))
+    (mafia "mafia" ("mafia" "repl" dante-target))
+    (bare-cabal ,(lambda (d) (directory-files d t "..cabal$")) ("cabal" "repl" dante-target "--builddir=dist/dante"))
+    (bare-ghci ,(lambda (_) t) ("ghci")))
+"How to automatically locate project roots and launch GHCi.
+This is an alist from method name to a pair of
+a `locate-dominating-file' argument and a command line."
+  :type '(alist :key-type symbol :value-type (list (choice (string :tag "File to locate") (function :tag "Predicate to use")) (repeat sexp))))

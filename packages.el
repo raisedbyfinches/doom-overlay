@@ -12,4 +12,4 @@
 
 ;; -- variables ----------------------------------------------------------------
 (package! imenu-list)
-(unpin! org-mode)
+(unpin! doom-modeline)
