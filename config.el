@@ -6,8 +6,8 @@
 (setq doom-theme 'doom-horizon)
 
 ;; fonts
-(setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "Regular"))
-(setq doom-big-font (font-spec :family "Iosevka Custom" :size 20 :style "Regular"))
+(setq doom-font (font-spec :family "M+ 2m" :size 14 :style "Regular"))
+(setq doom-big-font (font-spec :family "M+ 2m" :size 20 :style "Regular"))
 (setq doom-variable-pitch-font (font-spec :family "Overpass" :size 14 ))
 
 ;; modeline
@@ -28,10 +28,10 @@
 
 ;; -- haskell -------------------------------------------------------------------
 (after! haskell
-  (setq haskell-process-type 'cabal-repl)
+  (setq haskell-process-type 'cabal-new-repl)
   (setq haskell-process-wrapper-function
         (lambda (argv)
-          (append (list "nix-shell" "--pure" "--command")
+          (append (list "nix-shell" "--command")
                   (list (mapconcat 'identity argv " "))))))
 
 ;; -- Org -----------------------------------------------------------------------
@@ -62,8 +62,8 @@
      (process-buffer
       (if (or (file-exists-p "default.nix")
               (file-exists-p "shell.nix"))
-          (run-python "nix-shell --command python3" nil t)
-        (run-python "python3" nil t)))))
+          (run-python "nix-shell --command python" nil t)
+        (run-python "python" nil t)))))
   (set-repl-handler! 'python-mode #'open-ipython-repl :persist t))
 
 
@@ -168,14 +168,14 @@
 
 
 
-'fix' Dante
+;; 'fix' Dante, just removing --pure
 (defcustom dante-methods-alist
   `((styx "styx.yaml" ("styx" "repl" dante-target))
     ; (snack ,(lambda (d) (directory-files d t "package\\.\\(yaml\\|nix\\)")) ("snack" "ghci" dante-target)) ; too easy to trigger, confuses too many people.
-    (new-impure-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
+    (new-impure-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
     ;; (new-nix dante-cabal-new-nix ("nix-shell" "--pure" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
     ;; (nix dante-cabal-nix ("nix-shell" "--pure" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
-    (new-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
+    (new-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
     (nix dante-cabal-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
     (impure-nix dante-cabal-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
     (new-build "cabal.project.local" ("cabal" "new-repl" (or dante-target (dante-package-name) nil) "--builddir=dist/dante"))
