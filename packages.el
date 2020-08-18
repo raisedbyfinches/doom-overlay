@@ -12,4 +12,8 @@
 
 ;; -- variables ----------------------------------------------------------------
 (package! imenu-list)
-(unpin! doom-modeline)
+(package! ess-view :pin "d4e5a340b7...")
+
+;; redraw org tables with box-drawing characters
+(package! org-pretty-table-mode
+  :recipe (:host github :repo "Fuco1/org-pretty-table") :pin "88380f865a...")

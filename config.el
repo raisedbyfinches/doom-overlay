@@ -17,13 +17,33 @@
 (setq doom-modeline-project-detection 'ffip)
 
 
-;; -- Backups -------------------------------------------------------------------
-(setq make-backup-files   t
-      backup-by-copying   t
-      delete-old-versions t
-      kept-new-versions   5
-      kept-old-versions   2
-      version-control     t)
+;; prompts
+(setq which-key-idle-delay 0.5)
+
+
+;; -- Basic settings ------------------------------------------------------------
+(setq make-backup-files         t
+      backup-by-copying         t
+      delete-old-versions       t
+      kept-new-versions         5
+      kept-old-versions         2
+      version-control           t)
+
+(setq-default
+  delete-by-moving-to-trash  t
+  uniquify-buffer-name-style 'forward
+  window-combination-resize  t
+  )
+
+(setq evil-want-fine-undo t
+      truncate-string-ellipsis "…"
+      display-line-numbers-type 'relative)
+
+(delete-selection-mode 1)
+
+;; slightly nicer default buffer names
+(setq doom-fallback-buffer-name " Doom "
+      +doom-dashboard-name "   Doom   ")
 
 
 ;; -- haskell -------------------------------------------------------------------
@@ -44,7 +64,16 @@
 (add-hook! 'org-mode-hook #'doom-disable-line-numbers-h)
 (after! org
   (add-to-list 'org-modules 'org-habit t)
-  (setq jupyter-eval-uses-overlays t))
+  (setq jupyter-eval-uses-overlays t)
+  (setq org-babel-default-header-args '((:session . "none")
+                                        (:results . "replace")
+                                        (:exports . "code")
+                                        (:cache . "no")
+                                        (:noweb . "no")
+                                        (:hlines . "no")
+                                        (:tangle . "no")
+                                         (:comments . "link")))
+  (setq global-org-pretty-table-mode t))
 
 ;; all the time org settings?
 (setq org-directory "~/.org/"
@@ -52,6 +81,8 @@
       org-ellipsis "  "
       org-hide-emphasis-markers t
       org-bullets-bullet-list '(""))
+
+
 
 
 ;; -- Python --------------------------------------------------------------------
@@ -72,6 +103,45 @@
   (map! :desc "Switch between buffers and repl"
         "<backtab>"
         #'ess-switch-to-inferior-or-script-buffer)
+  (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate))
+  (setq ess-eval-visibly 'nowait)  ;; do not hang the editor on R eval
+  (appendq! +pretty-code-symbols
+           '(:assign "←"
+              :multiply "×"
+              :true "𝐓"
+              :false "𝐅"))
+  (set-pretty-symbols! 'ess-r-mode
+    ;; Functional
+    :def "function"
+    ;; Types
+    :null "NULL"
+    :true "TRUE"
+    :false "FALSE"
+    :int "int"
+    :float "float"
+    :bool "bool"
+    ;; Flow
+    :not "!"
+    :and "&&" :or "||"
+    :for "for"
+    :in "%in%"
+    :return "return"
+    ;; Other
+    :assign "<-"
+    :multiply "%*%")
+
+  (setq ess-R-font-lock-keywords '((ess-R-fl-keyword:keywords . t)
+    (ess-R-fl-keyword:constants . t)
+    (ess-R-fl-keyword:modifiers . t)
+    (ess-R-fl-keyword:fun-defs . t)
+    (ess-R-fl-keyword:assign-ops . t)
+    (ess-R-fl-keyword:%op% . t)
+    (ess-fl-keyword:fun-calls . t)
+    (ess-fl-keyword:numbers . t)
+    (ess-fl-keyword:operators . t)
+    (ess-fl-keyword:delimiters . t)
+    (ess-fl-keyword:= . t)
+    (ess-R-fl-keyword:F&T . t)))
 
   (defun +ess/open-r-repl (&optional arg)
     "Open an ESS R REPL"
@@ -96,16 +166,19 @@
       :desc "List code items" "l" #'imenu-list-smart-toggle)
 
 ;; -- popup buffer options ------------------------------------------------------
-;; (defun ivy-posframe-display-at-top (str)
-;;    (ivy-posframe--display str #'posframe-poshandler-frame-top-center))
-;; (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-top)))
-;; (ivy-posframe-mode 1) ; This line is needed
+(defun ivy-posframe-display-at-top (str)
+   (ivy-posframe--display str #'posframe-poshandler-frame-top-center))
+(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-top)))
+(ivy-posframe-mode 1) ; This line is needed
 
 ;; -- Tabs ----------------------------------------------------------------------
-;; (after! tabs
-;;   (setq centaur-tabs-height 40)
-;;   (setq centaur-tabs-set-close-button nil)
-;;   (centaur-tabs-group-by-projectile-project))
+(after! centaur-tabs
+  (centaur-tabs-mode -1)
+  (setq centaur-tabs-height 40
+    centaur-tabs-set-close-button nil
+    centaur-tabs-set-icons t
+    centaur-tabs-set-bar 'above)
+   (centaur-tabs-group-by-projectile-project))
 
 
 ;; -- DOOM ----------------------------------------------------------------------
@@ -113,6 +186,9 @@
   (setq company-minimum-prefix-length 2)
   (setq company-tooltip-limit 10)                      ; bigger popup window
   (setq company-echo-delay 0)                          ; remove annoying blinking
+  (setq company-idle-delay 0.5)
+  (setq company-minimum-prefix-length 2)
+  (setq company-show-numbers t)
   (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
   (global-company-mode t))
 
@@ -122,6 +198,11 @@
   (interactive)
   (ediff-files (concat doom-private-dir "init.el")
                (concat doom-emacs-dir "init.example.el")))
+
+
+;; -- vterm ---------------------------------------------------------------------
+;; I want the cmake flags to use system vterm whenever it recompiles
+(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
 
 
 ;; -- Appearance 2: electric boogaloo  ------------------------------------------
@@ -165,27 +246,3 @@
   `(ivy-posframe :background ,(doom-darken (doom-color 'bg) 0.1))
   `(company-box-background :background ,(doom-darken (doom-color 'bg) 0.1))
   )
-
-
-
-;; 'fix' Dante, just removing --pure
-(defcustom dante-methods-alist
-  `((styx "styx.yaml" ("styx" "repl" dante-target))
-    ; (snack ,(lambda (d) (directory-files d t "package\\.\\(yaml\\|nix\\)")) ("snack" "ghci" dante-target)) ; too easy to trigger, confuses too many people.
-    (new-impure-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
-    ;; (new-nix dante-cabal-new-nix ("nix-shell" "--pure" "--run" (concat "cabal v2-repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
-    ;; (nix dante-cabal-nix ("nix-shell" "--pure" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
-    (new-nix dante-cabal-new-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target (dante-package-name) "") " --builddir=dist/dante")))
-    (nix dante-cabal-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
-    (impure-nix dante-cabal-nix ("nix-shell" "--run" (concat "cabal repl " (or dante-target "") " --builddir=dist/dante")))
-    (new-build "cabal.project.local" ("cabal" "new-repl" (or dante-target (dante-package-name) nil) "--builddir=dist/dante"))
-    ;; (nix-ghci ,(lambda (d) (directory-files d t "shell.nix\\|default.nix")) ("nix-shell" "--pure" "--run" "ghci"))
-    (nix-ghci ,(lambda (d) (directory-files d t "shell.nix\\|default.nix")) ("nix-shell" "--run" "ghci"))
-    (stack "stack.yaml" ("stack" "repl" dante-target))
-    (mafia "mafia" ("mafia" "repl" dante-target))
-    (bare-cabal ,(lambda (d) (directory-files d t "..cabal$")) ("cabal" "repl" dante-target "--builddir=dist/dante"))
-    (bare-ghci ,(lambda (_) t) ("ghci")))
-"How to automatically locate project roots and launch GHCi.
-This is an alist from method name to a pair of
-a `locate-dominating-file' argument and a command line."
-  :type '(alist :key-type symbol :value-type (list (choice (string :tag "File to locate") (function :tag "Predicate to use")) (repeat sexp))))
