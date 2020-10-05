@@ -7,28 +7,21 @@
 
 ;; fonts
 (setq doom-font (font-spec :family "M+ 2m" :size 14 :style "Regular"))
-(setq doom-big-font (font-spec :family "M+ 2m" :size 20 :style "Regular"))
-(setq doom-variable-pitch-font (font-spec :family "Overpass" :size 14 ))
+(setq doom-big-font (font-spec :family "M+ 2m" :size 18 :style "Regular"))
+(setq doom-variable-pitch-font (font-spec :family "M+ 1c" :size 14 ))
 
 ;; modeline
 (setq doom-modeline-buffer-encoding nil)
 (setq doom-modeline-major-mode-icon nil)
+(setq doom-modeline-height 40)
 (setq find-file-visit-truename t)
 (setq doom-modeline-project-detection 'ffip)
-
 
 ;; prompts
 (setq which-key-idle-delay 0.5)
 
 
 ;; -- Basic settings ------------------------------------------------------------
-(setq make-backup-files         t
-      backup-by-copying         t
-      delete-old-versions       t
-      kept-new-versions         5
-      kept-old-versions         2
-      version-control           t)
-
 (setq-default
   delete-by-moving-to-trash  t
   uniquify-buffer-name-style 'forward
@@ -42,17 +35,14 @@
 (delete-selection-mode 1)
 
 ;; slightly nicer default buffer names
-(setq doom-fallback-buffer-name " Doom "
+(setq doom-fallback-buffer-name "   Doom   "
       +doom-dashboard-name "   Doom   ")
 
 
 ;; -- haskell -------------------------------------------------------------------
 (after! haskell
-  (setq haskell-process-type 'cabal-new-repl)
-  (setq haskell-process-wrapper-function
-        (lambda (argv)
-          (append (list "nix-shell" "--command")
-                  (list (mapconcat 'identity argv " "))))))
+  (setq haskell-process-type 'cabal-new-repl))
+
 
 ;; -- Org -----------------------------------------------------------------------
 (add-hook! 'org-mode-hook
@@ -72,7 +62,7 @@
                                         (:noweb . "no")
                                         (:hlines . "no")
                                         (:tangle . "no")
-                                         (:comments . "link")))
+                                        (:comments . "link")))
   (setq global-org-pretty-table-mode t))
 
 ;; all the time org settings?
@@ -81,8 +71,6 @@
       org-ellipsis "  "
       org-hide-emphasis-markers t
       org-bullets-bullet-list '(""))
-
-
 
 
 ;; -- Python --------------------------------------------------------------------
@@ -105,12 +93,12 @@
         #'ess-switch-to-inferior-or-script-buffer)
   (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate))
   (setq ess-eval-visibly 'nowait)  ;; do not hang the editor on R eval
-  (appendq! +pretty-code-symbols
+  (appendq! +ligatures-extra-symbols
            '(:assign "←"
               :multiply "×"
               :true "𝐓"
               :false "𝐅"))
-  (set-pretty-symbols! 'ess-r-mode
+  (set-ligatures! 'ess-r-mode
     ;; Functional
     :def "function"
     ;; Types
@@ -158,27 +146,11 @@
 (add-hook! 'org-mode-hook (setq ispell-list-command "--list"))
 
 
-;; -- locals window -------------------------------------------------------------
-(use-package! imenu-list
-  :commands imenu-list-smart-toggle)
-(map! :map doom-leader-code-map
-      ;;; > List items
-      :desc "List code items" "l" #'imenu-list-smart-toggle)
-
 ;; -- popup buffer options ------------------------------------------------------
 (defun ivy-posframe-display-at-top (str)
    (ivy-posframe--display str #'posframe-poshandler-frame-top-center))
 (setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-top)))
 (ivy-posframe-mode 1) ; This line is needed
-
-;; -- Tabs ----------------------------------------------------------------------
-(after! centaur-tabs
-  (centaur-tabs-mode -1)
-  (setq centaur-tabs-height 40
-    centaur-tabs-set-close-button nil
-    centaur-tabs-set-icons t
-    centaur-tabs-set-bar 'above)
-   (centaur-tabs-group-by-projectile-project))
 
 
 ;; -- DOOM ----------------------------------------------------------------------
@@ -210,17 +182,17 @@
 (setq doom-modeline-major-mode-icon t)
 
 (defun doom-dashboard-widget-footer ()
-  (insert
-   "\n"
-   (+doom-dashboard--center
-    (- +doom-dashboard--width 2)
-    (with-temp-buffer
-      (insert-text-button ""
-                          'action (lambda (_) (browse-url "https://github.com/karetsu"))
-                          'follow-link t
-                          'help-echo "GitHub")
-      (buffer-string)))
-   "\n"))
+  ;; (insert
+  ;;  "\n"
+  ;;  (+doom-dashboard--center
+  ;;   (- +doom-dashboard--width 2)
+  ;;   (with-temp-buffer
+  ;;     (insert-text-button ""
+  ;;                         'action (lambda (_) (browse-url "https://github.com/karetsu"))
+  ;;                         'follow-link t
+  ;;                         'help-echo "GitHub")
+  ;;     (buffer-string)))
+  "\n" )
 
 (custom-set-faces!
   ;; base
@@ -245,4 +217,32 @@
   `(doom-modeline-icon-inactive :background ,(doom-color 'bg-alt) :foreground ,(doom-color 'bg-alt))
   `(ivy-posframe :background ,(doom-darken (doom-color 'bg) 0.1))
   `(company-box-background :background ,(doom-darken (doom-color 'bg) 0.1))
+  `(ein:cell-input-area :background ,(doom-color 'bg-alt) )
   )
+
+
+;; TODO: sort this out
+(use-package! direnv
+  :defer
+  :config (direnv-mode))
+
+;; TODO: also sort this out
+(use-package! platformio-mode
+  :config
+  (add-to-list 'company-backends 'company-irony)
+  ;; Enable irony for all c++ files, and platformio-mode only
+  ;; when needed (platformio.ini present in project root).
+  (add-hook 'c++-mode-hook (lambda ()
+                           (irony-mode)
+                           (irony-eldoc)
+                           (platformio-conditionally-enable)))
+
+  ;; Use irony's completion functions.
+  (add-hook! 'irony-mode-hook
+    (define-key irony-mode-map [remap completion-at-point]
+                               'irony-completion-at-point-async)
+
+    (define-key irony-mode-map [remap complete-symbol]
+              'irony-completion-at-point-async)
+
+            (irony-cdb-autosetup-compile-options)))
