@@ -1,47 +1,73 @@
 ;;; .config/doom/config.el -*- lexical-binding: t; -*-
 
 ;; place your private configuration here
+;; -- Me ------------------------------------------------------------------------
+(setq user-full-name "Aloysius"
+      user-mail-address "myogibo@gmail.com")
 
 ;; -- Theme ---------------------------------------------------------------------
 (setq doom-theme 'doom-horizon)
 
 ;; fonts
-(setq doom-font (font-spec :family "M+ 2m" :size 14 :style "Regular"))
-(setq doom-big-font (font-spec :family "M+ 2m" :size 18 :style "Regular"))
-(setq doom-variable-pitch-font (font-spec :family "M+ 1c" :size 14 ))
+(setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "regular")
+      doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "regular")
+      doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 )
+      doom-unicode-font (font-spec :family "Iosevka Custom" :size 13))
+;;doom-unicode-font (font-spec :family "Rounded Mplus 1c" :size 13))
 
 ;; modeline
 (setq doom-modeline-buffer-encoding nil)
 (setq doom-modeline-major-mode-icon nil)
-(setq doom-modeline-height 40)
+(setq doom-modeline-height 42)
 (setq find-file-visit-truename t)
-(setq doom-modeline-project-detection 'ffip)
+
+;; add extra padding to the modeline to prevent it overflowing
+(after! doom-modeline
+  (doom-modeline-def-modeline 'main
+    '(bar matches buffer-info remote-host buffer-position parrot selection-info)
+    '(misc-info minor-modes check input-method buffer-encoding major-mode process vcs "  ")))
+
 
 ;; prompts
 (setq which-key-idle-delay 0.5)
 
+;; whitespace mode
+(global-whitespace-mode +1)
+(global-whitespace-newline-mode 0)
 
 ;; -- Basic settings ------------------------------------------------------------
 (setq-default
-  delete-by-moving-to-trash  t
-  uniquify-buffer-name-style 'forward
-  window-combination-resize  t
-  )
+ delete-by-moving-to-trash  t
+ uniquify-buffer-name-style 'forward
+ window-combination-resize  t
+ )
 
 (setq evil-want-fine-undo t
       truncate-string-ellipsis "…"
       display-line-numbers-type 'relative)
 
 (delete-selection-mode 1)
+(display-time-mode 1)
 
 ;; slightly nicer default buffer names
-(setq doom-fallback-buffer-name "   Doom   "
-      +doom-dashboard-name "   Doom   ")
+(setq doom-fallback-buffer-name "-Doom-"
+      +doom-dashboard-name "Doomboard")
+
+;; prettify treemacs
+(after! treemacs
+  (add-hook! 'treemacs-mode-hook (setq window-divider-mode -1
+                                       variable-pitch-mode 1
+                                       treemacs-follow-mode 1)))
+
+;; -- BUG FIXES -----------------------------------------------------------------
+;; flymake is broken wrt haskell-mode
+(setq flymake-allowed-file-name-masks nil)
+
 
 
 ;; -- haskell -------------------------------------------------------------------
-(after! haskell
-  (setq haskell-process-type 'cabal-new-repl))
+(after! lsp-haskell
+  (setq lsp-haskell-formatting-provider "fourmolu"))
 
 
 ;; -- Org -----------------------------------------------------------------------
@@ -50,11 +76,11 @@
   (+word-wrap-mode t)
   (writeroom-mode t)
   (writegood-mode t)
-  (mixed-pitch-mode 1))
-(add-hook! 'org-mode-hook #'doom-disable-line-numbers-h)
+  (display-line-numbers-mode -1)
+  (setq display-line-numbers-type nil)
+  (mixed-pitch-mode 0))
 (after! org
   (add-to-list 'org-modules 'org-habit t)
-  (setq jupyter-eval-uses-overlays t)
   (setq org-babel-default-header-args '((:session . "none")
                                         (:results . "replace")
                                         (:exports . "code")
@@ -67,13 +93,20 @@
 
 ;; all the time org settings?
 (setq org-directory "~/.org/"
+      org-journal-dir "~/.org/journal/"
+      org-journal-date-format "%a, %d %B %Y"
+      org-journal-file-type `weekly
       org-agenda-files (list org-directory)
       org-ellipsis "  "
       org-hide-emphasis-markers t
       org-bullets-bullet-list '(""))
 
+(setq org-agenda-files '("~/.org/work.org"
+                         "~/.org/egs.org"))
+(setq org-journal-enable-agenda-integration t)
 
-;; -- Python --------------------------------------------------------------------
+
+;; Python --------------------------------------------------------------------
 (after! python
   (defun open-ipython-repl ()
     (interactive)
@@ -91,13 +124,12 @@
   (map! :desc "Switch between buffers and repl"
         "<backtab>"
         #'ess-switch-to-inferior-or-script-buffer)
-  (set-company-backend! 'ess-r-mode '(company-R-args company-R-objects company-dabbrev-code :separate))
   (setq ess-eval-visibly 'nowait)  ;; do not hang the editor on R eval
   (appendq! +ligatures-extra-symbols
-           '(:assign "←"
-              :multiply "×"
-              :true "𝐓"
-              :false "𝐅"))
+            '(:assign "←"
+              :multiply "×"))
+  (add-hook! 'ess-r-mode-hook (highlight-numbers-mode -1))
+
   (set-ligatures! 'ess-r-mode
     ;; Functional
     :def "function"
@@ -118,58 +150,30 @@
     :assign "<-"
     :multiply "%*%")
 
-  (setq ess-R-font-lock-keywords '((ess-R-fl-keyword:keywords . t)
-    (ess-R-fl-keyword:constants . t)
-    (ess-R-fl-keyword:modifiers . t)
-    (ess-R-fl-keyword:fun-defs . t)
-    (ess-R-fl-keyword:assign-ops . t)
-    (ess-R-fl-keyword:%op% . t)
-    (ess-fl-keyword:fun-calls . t)
-    (ess-fl-keyword:numbers . t)
-    (ess-fl-keyword:operators . t)
-    (ess-fl-keyword:delimiters . t)
-    (ess-fl-keyword:= . t)
-    (ess-R-fl-keyword:F&T . t)))
-
-  (defun +ess/open-r-repl (&optional arg)
-    "Open an ESS R REPL"
-    (interactive "P")
-    (if (or (file-exists-p "default.nix")
-            (file-exists-p "shell.nix"))
-        (run-ess-r "nix-shell --command R")
-      (run-ess-r arg))
-    (current-buffer)))
-
+  (setq ess-R-font-lock-keywords '(
+                                   (ess-R-fl-keyword:keywords . t)
+                                   (ess-R-fl-keyword:constants . t)
+                                   (ess-R-fl-keyword:modifiers . t)
+                                   (ess-R-fl-keyword:fun-defs . t)
+                                   (ess-R-fl-keyword:assign-ops . t)
+                                   (ess-R-fl-keyword:%op% . t)
+                                   (ess-fl-keyword:fun-calls . t)
+                                   (ess-fl-keyword:numbers . t)
+                                   (ess-fl-keyword:operators . t)
+                                   (ess-fl-keyword:delimiters . t)
+                                   (ess-fl-keyword:= . t)
+                                   (ess-R-fl-keyword:F&T . t))))
 
 ;; -- Text ----------------------------------------------------------------------
 ;; make flyspell work with aspell
 (add-hook! 'org-mode-hook (setq ispell-list-command "--list"))
 
-
-;; -- popup buffer options ------------------------------------------------------
-(defun ivy-posframe-display-at-top (str)
-   (ivy-posframe--display str #'posframe-poshandler-frame-top-center))
-(setq ivy-posframe-display-functions-alist '((t . ivy-posframe-display-at-top)))
-(ivy-posframe-mode 1) ; This line is needed
-
-
 ;; -- DOOM ----------------------------------------------------------------------
-(after! company
-  (setq company-minimum-prefix-length 2)
-  (setq company-tooltip-limit 10)                      ; bigger popup window
-  (setq company-echo-delay 0)                          ; remove annoying blinking
-  (setq company-idle-delay 0.5)
-  (setq company-minimum-prefix-length 2)
-  (setq company-show-numbers t)
-  (setq company-begin-commands '(self-insert-command)) ; start autocompletion only after typing
-  (global-company-mode t))
-
-
 (defun doom/diff-init ()
   "ediff the current `init.el' with the example in doom-emacs-dir"
   (interactive)
   (ediff-files (concat doom-private-dir "init.el")
-               (concat doom-emacs-dir "init.example.el")))
+               (concat doom-emacs-dir "templates/init.example.el")))
 
 
 ;; -- vterm ---------------------------------------------------------------------
@@ -178,27 +182,16 @@
 
 
 ;; -- Appearance 2: electric boogaloo  ------------------------------------------
-(setq fancy-splash-image "~/.config/doom/bill.png")
+(setq fancy-splash-image "~/.config/doom/images/lion-head.png")
 (setq doom-modeline-major-mode-icon t)
-
-(defun doom-dashboard-widget-footer ()
-  ;; (insert
-  ;;  "\n"
-  ;;  (+doom-dashboard--center
-  ;;   (- +doom-dashboard--width 2)
-  ;;   (with-temp-buffer
-  ;;     (insert-text-button ""
-  ;;                         'action (lambda (_) (browse-url "https://github.com/karetsu"))
-  ;;                         'follow-link t
-  ;;                         'help-echo "GitHub")
-  ;;     (buffer-string)))
-  "\n" )
 
 (custom-set-faces!
   ;; base
   `(font-lock-comment-face :inherit 'font-lock-comment-face :weight bold)
   `(font-lock-doc-face :foreground ,(doom-color 'comments) :inherit 'bold-italic)
   `((line-number-current-line &override) :foreground ,(doom-color 'base4) :inherit 'bold)
+  `(whitespace-space :foreground ,(doom-lighten (doom-color 'bg-alt) 0.05))
+  `(whitespace-newline :foreground ,(doom-color 'bg))
 
   ;; doom
   `(doom-dashboard-footer-icon :foreground ,(doom-color 'red))
@@ -219,30 +212,3 @@
   `(company-box-background :background ,(doom-darken (doom-color 'bg) 0.1))
   `(ein:cell-input-area :background ,(doom-color 'bg-alt) )
   )
-
-
-;; TODO: sort this out
-(use-package! direnv
-  :defer
-  :config (direnv-mode))
-
-;; TODO: also sort this out
-(use-package! platformio-mode
-  :config
-  (add-to-list 'company-backends 'company-irony)
-  ;; Enable irony for all c++ files, and platformio-mode only
-  ;; when needed (platformio.ini present in project root).
-  (add-hook 'c++-mode-hook (lambda ()
-                           (irony-mode)
-                           (irony-eldoc)
-                           (platformio-conditionally-enable)))
-
-  ;; Use irony's completion functions.
-  (add-hook! 'irony-mode-hook
-    (define-key irony-mode-map [remap completion-at-point]
-                               'irony-completion-at-point-async)
-
-    (define-key irony-mode-map [remap complete-symbol]
-              'irony-completion-at-point-async)
-
-            (irony-cdb-autosetup-compile-options)))
