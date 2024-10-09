@@ -12,8 +12,7 @@
 (setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "regular")
       doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "regular")
       doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 )
-      doom-unicode-font (font-spec :family "Iosevka Custom" :size 13))
-;;doom-unicode-font (font-spec :family "Rounded Mplus 1c" :size 13))
+      doom-symbol-font (font-spec :family "Iosevka Custom" :size 13))
 
 ;; modeline
 (setq doom-modeline-buffer-encoding nil)
@@ -32,8 +31,7 @@
 (setq which-key-idle-delay 0.5)
 
 ;; whitespace mode
-(global-whitespace-mode +1)
-(global-whitespace-newline-mode 0)
+;;(global-whitespace-mode +1)
 
 ;; -- Basic settings ------------------------------------------------------------
 (setq-default
@@ -47,28 +45,18 @@
       display-line-numbers-type 'relative)
 
 (delete-selection-mode 1)
-(display-time-mode 1)
+(display-time-mode 3)
+
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 
 ;; slightly nicer default buffer names
 (setq doom-fallback-buffer-name "-Doom-"
       +doom-dashboard-name "Doomboard")
 
-;; prettify treemacs
-(after! treemacs
-  (add-hook! 'treemacs-mode-hook (setq window-divider-mode -1
-                                       variable-pitch-mode 1
-                                       treemacs-follow-mode 1)))
-
-;; -- BUG FIXES -----------------------------------------------------------------
-;; flymake is broken wrt haskell-mode
-(setq flymake-allowed-file-name-masks nil)
-
-
-
 ;; -- haskell -------------------------------------------------------------------
 (after! lsp-haskell
   (setq lsp-haskell-formatting-provider "fourmolu"))
-
 
 ;; -- Org -----------------------------------------------------------------------
 (add-hook! 'org-mode-hook
@@ -91,32 +79,13 @@
                                         (:comments . "link")))
   (setq global-org-pretty-table-mode t))
 
-;; all the time org settings?
+;; all the org settings?
 (setq org-directory "~/.org/"
-      org-journal-dir "~/.org/journal/"
-      org-journal-date-format "%a, %d %B %Y"
-      org-journal-file-type `weekly
-      org-agenda-files (list org-directory)
       org-ellipsis "  "
       org-hide-emphasis-markers t
       org-bullets-bullet-list '(""))
 
-(setq org-agenda-files '("~/.org/work.org"
-                         "~/.org/egs.org"))
-(setq org-journal-enable-agenda-integration t)
-
-
-;; Python --------------------------------------------------------------------
-(after! python
-  (defun open-ipython-repl ()
-    (interactive)
-    (pop-to-buffer
-     (process-buffer
-      (if (or (file-exists-p "default.nix")
-              (file-exists-p "shell.nix"))
-          (run-python "nix-shell --command python" nil t)
-        (run-python "python" nil t)))))
-  (set-repl-handler! 'python-mode #'open-ipython-repl :persist t))
+(setq deft-directory "~/.org")
 
 
 ;; -- r (ESS)--------------------------------------------------------------------
@@ -128,7 +97,7 @@
   (appendq! +ligatures-extra-symbols
             '(:assign "←"
               :multiply "×"))
-  (add-hook! 'ess-r-mode-hook (highlight-numbers-mode -1))
+  ;; (add-hook! 'ess-r-mode-hook (highlight-numbers-mode -1))
 
   (set-ligatures! 'ess-r-mode
     ;; Functional
@@ -172,7 +141,7 @@
 (defun doom/diff-init ()
   "ediff the current `init.el' with the example in doom-emacs-dir"
   (interactive)
-  (ediff-files (concat doom-private-dir "init.el")
+  (ediff-files (concat doom-user-dir "init.el")
                (concat doom-emacs-dir "templates/init.example.el")))
 
 
