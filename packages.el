@@ -7,3 +7,6 @@
 ;; (package! builtin-package :disable t)
 
 (package! direnv)
+(package! typst-ts-mode
+  :recipe (:host codeberg
+           :repo "meow_king/typst-ts-mode"))

@@ -9,10 +9,6 @@
 (setq doom-theme 'doom-horizon)
 
 ;; fonts
-;; (setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "Regular"))
-;; (setq doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "regular"))
-;; (setq doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 ))
-;; (setq doom-symbol-font (font-spec :family "Iosevka Custom" :size 14 :style "regular"))
 (setq doom-font (font-spec :family "Agave" :size 16 :style "Regular"))
 (setq doom-big-font (font-spec :family "Agave" :size 18 :style "Regular"))
 (setq doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 ))
@@ -29,7 +25,6 @@
   (doom-modeline-def-modeline 'main
     '(bar matches buffer-info remote-host buffer-position parrot selection-info)
     '(misc-info minor-modes check input-method buffer-encoding major-mode process vcs "  ")))
-
 
 ;; prompts
 (setq which-key-idle-delay 0.5)
@@ -170,14 +165,6 @@
   `(doom-dashboard-menu-desc   :foreground ,(doom-color 'yellow))
   `(doom-dashboard-menu-title  :foreground ,(doom-color 'red))
   `(doom-dashboard-loaded      :inherit font-lock-comment-face)
-
-  ;; haskell
-  ;; `(haskell-constructor-face   :inherit 'bold)
-  ;; `(haskell-keyword-face       :inherit 'italic :foreground ,(doom-color 'orange))
-  ;; `(haskell-type-face          :inherit 'bold :foreground ,(doom-color 'yellow))
-  ;; `(haskell-definition-face    :inherit 'bold :foreground ,(doom-color 'red))
-  ;; `(haskell-operator-face      :foreground ,(doom-color 'base4))
-
 
   ;; other appearance
   `(solaire-mode-line-inactive-face :background ,(doom-color 'bg) :foreground ,(doom-color 'bg-alt))
