@@ -2,17 +2,21 @@
 
 ;; place your private configuration here
 ;; -- Me ------------------------------------------------------------------------
-(setq user-full-name "Aloysius"
+(setq user-full-name "g"
       user-mail-address "myogibo@gmail.com")
 
 ;; -- Theme ---------------------------------------------------------------------
 (setq doom-theme 'doom-horizon)
 
 ;; fonts
-(setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "regular")
-      doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "regular")
-      doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 )
-      doom-symbol-font (font-spec :family "Iosevka Custom" :size 13))
+;; (setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "Regular"))
+;; (setq doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "regular"))
+;; (setq doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 ))
+;; (setq doom-symbol-font (font-spec :family "Iosevka Custom" :size 14 :style "regular"))
+(setq doom-font (font-spec :family "Agave" :size 16 :style "Regular"))
+(setq doom-big-font (font-spec :family "Agave" :size 18 :style "Regular"))
+(setq doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 ))
+(setq doom-symbol-font (font-spec :family "Agave" :size 16 :style "Regular"))
 
 ;; modeline
 (setq doom-modeline-buffer-encoding nil)
@@ -77,7 +81,8 @@
                                         (:hlines . "no")
                                         (:tangle . "no")
                                         (:comments . "link")))
-  (setq global-org-pretty-table-mode t))
+  (setq global-org-pretty-table-mode t)
+  (setq org-display-remote-inline-images t))
 
 ;; all the org settings?
 (setq org-directory "~/.org/"
@@ -87,6 +92,8 @@
 
 (setq deft-directory "~/.org")
 
+(after! spell-fu
+  (setq ispell-current-dictionary "en_GB"))
 
 ;; -- r (ESS)--------------------------------------------------------------------
 (after! ess
@@ -133,10 +140,6 @@
                                    (ess-fl-keyword:= . t)
                                    (ess-R-fl-keyword:F&T . t))))
 
-;; -- Text ----------------------------------------------------------------------
-;; make flyspell work with aspell
-(add-hook! 'org-mode-hook (setq ispell-list-command "--list"))
-
 ;; -- DOOM ----------------------------------------------------------------------
 (defun doom/diff-init ()
   "ediff the current `init.el' with the example in doom-emacs-dir"
@@ -169,10 +172,12 @@
   `(doom-dashboard-loaded      :inherit font-lock-comment-face)
 
   ;; haskell
-  `(haskell-constructor-face   :inherit 'bold)
-  `(haskell-keyword-face       :inherit 'italic :foreground ,(doom-color 'keywords))
-  `(haskell-definition-face    :inherit 'bold :foreground ,(doom-color 'red))
-  `(haskell-operator-face      :foreground ,(doom-color 'base4))
+  ;; `(haskell-constructor-face   :inherit 'bold)
+  ;; `(haskell-keyword-face       :inherit 'italic :foreground ,(doom-color 'orange))
+  ;; `(haskell-type-face          :inherit 'bold :foreground ,(doom-color 'yellow))
+  ;; `(haskell-definition-face    :inherit 'bold :foreground ,(doom-color 'red))
+  ;; `(haskell-operator-face      :foreground ,(doom-color 'base4))
+
 
   ;; other appearance
   `(solaire-mode-line-inactive-face :background ,(doom-color 'bg) :foreground ,(doom-color 'bg-alt))

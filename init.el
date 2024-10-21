@@ -37,7 +37,7 @@
        doom-dashboard      ; a nifty splash screen for Emacs
        ;;doom-quit         ; DOOM quit-message prompts when you quit Emacs
        (emoji
-        +unicode
+        ;; +unicode
         +github
         +ascii)            ; 🙂
        hl-todo             ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
@@ -51,8 +51,8 @@
        ;;neotree           ; a project drawer, like NERDTree for vim
        ophints             ; highlight the region an operation acts on
        (popup
-        +defaults
-        +all)              ; tame sudden yet inevitable temporary windows
+        +defaults)
+       ;;+all)             ; tame sudden yet inevitable temporary windows
        ;;tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
@@ -95,7 +95,7 @@
 
        :checkers
        syntax              ; tasing you for every semicolon you forget
-       (spell +aspell)     ; tasing you for misspelling mispelling
+       spell               ; tasing you for misspelling mispelling
        grammar             ; tasing grammar mistake every you make
 
        :tools
@@ -137,7 +137,7 @@
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
-       data                ; config/data formats
+       ;;data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
        (elixir
@@ -174,10 +174,10 @@
         +tree-sitter
         +snail)            ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       (latex              ; writing papers in Emacs has never been so fun
-        +fold
-        +lsp
-        +cdlatex)
+       ;;(latex            ; writing papers in Emacs has never been so fun
+       ;; +fold
+       ;; +lsp
+       ;; +cdlatex)
        ;;lean              ; for folks with too much to prove
        ;;ledger            ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
