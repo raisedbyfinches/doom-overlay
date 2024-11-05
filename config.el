@@ -9,10 +9,10 @@
 (setq doom-theme 'doom-horizon)
 
 ;; fonts
-(setq doom-font (font-spec :family "Agave" :size 16 :style "Regular"))
-(setq doom-big-font (font-spec :family "Agave" :size 18 :style "Regular"))
+(setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "Regular"))
+(setq doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "Regular"))
 (setq doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 ))
-(setq doom-symbol-font (font-spec :family "Agave" :size 16 :style "Regular"))
+(setq doom-symbol-font (font-spec :family "Iosevka Custom" :size 16 :style "Regular"))
 
 ;; modeline
 (setq doom-modeline-buffer-encoding nil)
