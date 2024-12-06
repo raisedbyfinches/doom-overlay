@@ -9,10 +9,10 @@
 (setq doom-theme 'doom-horizon)
 
 ;; fonts
-(setq doom-font (font-spec :family "Iosevka Custom" :size 14 :style "Regular"))
-(setq doom-big-font (font-spec :family "Iosevka Custom" :size 18 :style "Regular"))
-(setq doom-variable-pitch-font (font-spec :family "Rounded Mplus 1c" :size 14 ))
-(setq doom-symbol-font (font-spec :family "Iosevka Custom" :size 16 :style "Regular"))
+(setq doom-font (font-spec :family "JetBrains Mono" :size 14 :style "Regular"))
+(setq doom-big-font (font-spec :family "JetBrains Mono" :size 18 :style "Regular"))
+(setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14 ))
+(setq doom-symbol-font (font-spec :family "JetBrains Mono" :size 16 :style "Regular"))
 
 ;; modeline
 (setq doom-modeline-buffer-encoding nil)
@@ -65,7 +65,7 @@
   (writegood-mode t)
   (display-line-numbers-mode -1)
   (setq display-line-numbers-type nil)
-  (mixed-pitch-mode 0))
+  (mixed-pitch-mode 1))
 (after! org
   (add-to-list 'org-modules 'org-habit t)
   (setq org-babel-default-header-args '((:session . "none")
@@ -121,19 +121,19 @@
     :assign "<-"
     :multiply "%*%")
 
-  (setq ess-R-font-lock-keywords '(
-                                   (ess-R-fl-keyword:keywords . t)
-                                   (ess-R-fl-keyword:constants . t)
-                                   (ess-R-fl-keyword:modifiers . t)
-                                   (ess-R-fl-keyword:fun-defs . t)
-                                   (ess-R-fl-keyword:assign-ops . t)
-                                   (ess-R-fl-keyword:%op% . t)
-                                   (ess-fl-keyword:fun-calls . t)
-                                   (ess-fl-keyword:numbers . t)
-                                   (ess-fl-keyword:operators . t)
-                                   (ess-fl-keyword:delimiters . t)
-                                   (ess-fl-keyword:= . t)
-                                   (ess-R-fl-keyword:F&T . t))))
+  (setq ess-R-font-lock-keywords
+        '((ess-R-fl-keyword:keywords . t)
+          (ess-R-fl-keyword:constants . t)
+          (ess-R-fl-keyword:modifiers . t)
+          (ess-R-fl-keyword:fun-defs . t)
+          (ess-R-fl-keyword:assign-ops . t)
+          (ess-R-fl-keyword:%op% . t)
+          (ess-fl-keyword:fun-calls . t)
+          (ess-fl-keyword:numbers . t)
+          (ess-fl-keyword:operators . t)
+          (ess-fl-keyword:delimiters . t)
+          (ess-fl-keyword:= . t)
+          (ess-R-fl-keyword:F&T . t))))
 
 ;; -- DOOM ----------------------------------------------------------------------
 (defun doom/diff-init ()
@@ -145,7 +145,7 @@
 
 ;; -- vterm ---------------------------------------------------------------------
 ;; I want the cmake flags to use system vterm whenever it recompiles
-(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
+;; (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
 
 
 ;; -- Appearance 2: electric boogaloo  ------------------------------------------

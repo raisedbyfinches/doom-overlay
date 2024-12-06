@@ -10,3 +10,10 @@
 (package! typst-ts-mode
   :recipe (:host codeberg
            :repo "meow_king/typst-ts-mode"))
+
+;; for some reason org noter doesn't add these automatically
+(package! djvu)
+(package! nov)
+
+;; for eww widgets config
+(package! yuck-mode)
