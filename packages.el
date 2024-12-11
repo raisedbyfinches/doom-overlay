@@ -15,5 +15,5 @@
 (package! djvu)
 (package! nov)
 
-;; for eww widgets config
-(package! yuck-mode)
+;; replace LaTeX with xenops
+(package! xenops)

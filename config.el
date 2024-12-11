@@ -20,6 +20,9 @@
 (setq doom-modeline-height 42)
 (setq find-file-visit-truename t)
 
+(setq doom-user-dir "/home/g/.config/doom/")
+
+
 ;; add extra padding to the modeline to prevent it overflowing
 (after! doom-modeline
   (doom-modeline-def-modeline 'main
@@ -45,6 +48,7 @@
 
 (delete-selection-mode 1)
 (display-time-mode 3)
+(pixel-scroll-precision-mode 1)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
@@ -52,6 +56,7 @@
 ;; slightly nicer default buffer names
 (setq doom-fallback-buffer-name "-Doom-"
       +doom-dashboard-name "Doomboard")
+
 
 ;; -- haskell -------------------------------------------------------------------
 (after! lsp-haskell
@@ -65,33 +70,47 @@
   (writegood-mode t)
   (display-line-numbers-mode -1)
   (setq display-line-numbers-type nil)
-  (mixed-pitch-mode 1))
+  (mixed-pitch-mode 1)
+  (xenops-mode t)
+  (xenops-xen-mode t))
+
 (after! org
+  ;; latex symbols
+  (add-to-list 'org-latex-packages-alist '("" "amsmath" t))
+  (add-to-list 'org-latex-packages-alist '("" "amssymb" t))
+  (add-to-list 'org-latex-packages-alist '("" "mathtools" t))
+  (add-to-list 'org-latex-packages-alist '("" "mathrsfs" t))
+
+  ;; other org config
   (add-to-list 'org-modules 'org-habit t)
-  (setq org-babel-default-header-args '((:session . "none")
-                                        (:results . "replace")
-                                        (:exports . "code")
-                                        (:cache . "no")
-                                        (:noweb . "no")
-                                        (:hlines . "no")
-                                        (:tangle . "no")
-                                        (:comments . "link")))
-  (setq global-org-pretty-table-mode t)
-  (setq org-display-remote-inline-images t))
+  (setq
+   xenops-math-image-scale-factor 1.7
+   xenops-reveal-on-entry t
+   org-babel-default-header-args '((:session . "none")
+                                   (:results . "replace")
+                                   (:exports . "code")
+                                   (:cache . "no")
+                                   (:noweb . "no")
+                                   (:hlines . "no")
+                                   (:tangle . "no")
+                                   (:comments . "link"))
+   global-org-pretty-table-mode t
+   org-startup-with-latex-preview t
+   org-display-remote-inline-images t
 
-;; all the org settings?
-(setq org-directory "~/.org/"
-      org-ellipsis "  "
-      org-hide-emphasis-markers t
-      org-bullets-bullet-list '(""))
-
-(setq deft-directory "~/.org")
+   ;; all the org settings
+   org-directory "~/.org/"
+   org-ellipsis "  "
+   org-hide-emphasis-markers t
+   org-bullets-bullet-list '("")
+   deft-directory "~/.org"))
 
 (after! spell-fu
   (setq ispell-current-dictionary "en_GB"))
 
 ;; -- r (ESS)--------------------------------------------------------------------
 (after! ess
+  (set-popup-rules! '(("^\\*R:*\\*$" :side right :size 0.5 :ttl nil)))
   (map! :desc "Switch between buffers and repl"
         "<backtab>"
         #'ess-switch-to-inferior-or-script-buffer)
@@ -99,8 +118,6 @@
   (appendq! +ligatures-extra-symbols
             '(:assign "←"
               :multiply "×"))
-  ;; (add-hook! 'ess-r-mode-hook (highlight-numbers-mode -1))
-
   (set-ligatures! 'ess-r-mode
     ;; Functional
     :def "function"
@@ -133,20 +150,21 @@
           (ess-fl-keyword:operators . t)
           (ess-fl-keyword:delimiters . t)
           (ess-fl-keyword:= . t)
-          (ess-R-fl-keyword:F&T . t))))
+          (ess-R-fl-keyword:F&T . t)))
+
+  (map! (:map (ess-mode-map inferior-ess-mode-map) :g ";" #'ess-insert-assign))
+  )
 
 ;; -- DOOM ----------------------------------------------------------------------
 (defun doom/diff-init ()
   "ediff the current `init.el' with the example in doom-emacs-dir"
   (interactive)
   (ediff-files (concat doom-user-dir "init.el")
-               (concat doom-emacs-dir "templates/init.example.el")))
-
+               (concat doom-emacs-dir "static/init.example.el")))
 
 ;; -- vterm ---------------------------------------------------------------------
 ;; I want the cmake flags to use system vterm whenever it recompiles
-;; (setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
-
+(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
 
 ;; -- Appearance 2: electric boogaloo  ------------------------------------------
 (setq fancy-splash-image "~/.config/doom/images/lion-head.png")
