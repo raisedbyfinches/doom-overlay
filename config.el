@@ -57,6 +57,12 @@
 (setq doom-fallback-buffer-name "-Doom-"
       +doom-dashboard-name "Doomboard")
 
+;; tab bar settings
+(setq centaur-tabs-height 48)
+(setq centaur-tabs-set-bar 'over)
+(setq centaur-tabs-set-close-button nil)
+(define-key evil-normal-state-map (kbd "g t") 'centaur-tabs-forward)
+(define-key evil-normal-state-map (kbd "g T") 'centaur-tabs-backward)
 
 ;; -- haskell -------------------------------------------------------------------
 (after! lsp-haskell
@@ -154,6 +160,9 @@
 
   (map! (:map (ess-mode-map inferior-ess-mode-map) :g ";" #'ess-insert-assign))
   )
+
+;; -- Python --------------------------------------------------------------------
+
 
 ;; -- DOOM ----------------------------------------------------------------------
 (defun doom/diff-init ()

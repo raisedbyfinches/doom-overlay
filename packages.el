@@ -7,9 +7,7 @@
 ;; (package! builtin-package :disable t)
 
 (package! direnv)
-(package! typst-ts-mode
-  :recipe (:host codeberg
-           :repo "meow_king/typst-ts-mode"))
+(package! imenu-list)
 
 ;; for some reason org noter doesn't add these automatically
 (package! djvu)
