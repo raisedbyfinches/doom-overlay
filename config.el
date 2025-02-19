@@ -36,6 +36,7 @@
 ;;(global-whitespace-mode +1)
 
 ;; -- Basic settings ------------------------------------------------------------
+
 (setq-default
  delete-by-moving-to-trash  t
  uniquify-buffer-name-style 'forward

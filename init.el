@@ -52,7 +52,7 @@
        (popup
         +defaults)
        ;;+all)             ; tame sudden yet inevitable temporary windows
-       tabs              ; a tab bar for Emacs
+       ;;tabs              ; a tab bar for Emacs
        treemacs          ; a project drawer, like neotree but cooler
        unicode             ; extended unicode support for various languages
        (vc-gutter +pretty) ; vcs diff in the fringe
@@ -105,7 +105,7 @@
        direnv
        ;;docker
        editorconfig        ; let someone else argue about tabs vs spaces
-       ein               ; tame Jupyter notebooks with emacs
+       ein                 ; tame Jupyter notebooks with emacs
        (eval +overlay)     ; run code, run (also, repls)
        (lookup
         +dictionary
@@ -139,9 +139,9 @@
        ;;data              ; config/data formats
        ;;(dart +flutter)   ; paint ui and not much else
        ;;dhall
-       (elixir
-        +lsp
-        +tree-sitter)      ; erlang done right
+       ;;(elixir
+       ;; +lsp
+       ;; +tree-sitter)    ; erlang done right
        ;;elm               ; care for a cup of TEA?
        emacs-lisp          ; drown in parentheses
        ;;erlang            ; an elegant language for a more civilized age
@@ -168,10 +168,10 @@
        (javascript         ; all(hope(abandon(ye(who(enter(here))))))
         +lsp
         +tree-sitter)
-       (julia
-        +lsp
-        +tree-sitter
-        +snail)            ; a better, faster MATLAB
+       ;;(julia
+       ;; +lsp
+       ;; +tree-sitter
+       ;; +snail)          ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
        ;;(latex            ; writing papers in Emacs has never been so fun
        ;; +fold
@@ -206,9 +206,9 @@
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       (rust
-        +lsp
-        +tree-sitter)      ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;(rust
+       ;; +lsp
+       ;; +tree-sitter)    ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
        ;;(scheme +guile)   ; a fully conniving family of lisps
        (sh                 ; she sells {ba,z,fi}sh shells on the C xor
@@ -232,7 +232,7 @@
        :app
        ;;calendar
        ;;emms
-       everywhere        ; *leave* Emacs!? You must be joking
+       ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
        ;;twitter           ; twitter client https://twitter.com/vnought
