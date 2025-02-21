@@ -37,6 +37,9 @@
 
 ;; -- Basic settings ------------------------------------------------------------
 
+;; Allow hash to be entered because macs are stupid
+(global-set-key (kbd "M-3") '(lambda () (interactive) (insert "#")))
+
 (setq-default
  delete-by-moving-to-trash  t
  uniquify-buffer-name-style 'forward
