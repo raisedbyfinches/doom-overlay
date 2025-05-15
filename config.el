@@ -3,7 +3,7 @@
 ;; place your private configuration here
 ;; -- Me ------------------------------------------------------------------------
 (setq user-full-name "g"
-      user-mail-address "myogibo@gmail.com")
+      user-mail-address "gareth.clews@digital.trade.gov.uk")
 
 ;; -- Theme ---------------------------------------------------------------------
 (setq doom-theme 'doom-horizon)
@@ -20,7 +20,7 @@
 (setq doom-modeline-height 42)
 (setq find-file-visit-truename t)
 
-(setq doom-user-dir "/home/g/.config/doom/")
+(setq doom-user-dir "/Users/garethclews/.config/doom/")
 
 
 ;; add extra padding to the modeline to prevent it overflowing
@@ -49,9 +49,8 @@
 (setq evil-want-fine-undo t
       truncate-string-ellipsis "…"
       display-line-numbers-type 'relative)
-
 (delete-selection-mode 1)
-(display-time-mode 3)
+(display-time-mode 0)
 (pixel-scroll-precision-mode 1)
 
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
@@ -62,11 +61,11 @@
       +doom-dashboard-name "Doomboard")
 
 ;; tab bar settings
-(setq centaur-tabs-height 48)
-(setq centaur-tabs-set-bar 'over)
-(setq centaur-tabs-set-close-button nil)
-(define-key evil-normal-state-map (kbd "g t") 'centaur-tabs-forward)
-(define-key evil-normal-state-map (kbd "g T") 'centaur-tabs-backward)
+;; (setq centaur-tabs-height 48)
+;; (setq centaur-tabs-set-bar 'over)
+;; (setq centaur-tabs-set-close-button nil)
+;; (define-key evil-normal-state-map (kbd "g t") 'centaur-tabs-forward)
+;; (define-key evil-normal-state-map (kbd "g T") 'centaur-tabs-backward)
 
 ;; -- haskell -------------------------------------------------------------------
 (after! lsp-haskell

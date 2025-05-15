@@ -14,4 +14,4 @@
 (package! nov)
 
 ;; replace LaTeX with xenops
-(package! xenops)
+;; (package! xenops)
