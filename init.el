@@ -112,8 +112,7 @@
         +offline)          ; navigate your code and documentation
        (lsp
         +eglot)            ; M-x vscode
-       (magit
-        +forge)            ; a git porcelain for Emacs
+       magit               ; a git porcelain for Emacs
        ;;make              ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        pdf                 ; pdf enhancements
@@ -188,6 +187,7 @@
         +tree-sitter)      ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org                ; organize your plain life in plain text
+        +pretty
         +noter
         +pandoc
         +pomodoro
@@ -232,10 +232,9 @@
        :app
        ;;calendar
        ;;emms
-       ;;everywhere        ; *leave* Emacs!? You must be joking
+       ;;everywhere          ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
-       ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate

@@ -15,3 +15,15 @@
 
 ;; replace LaTeX with xenops
 (package! xenops)
+
+;; then replace LaTeX with Typst :)
+(package! typst-ts-mode
+  :recipe (:host codeberg
+           :repo "meow_king/typst-ts-mode"))
+
+;; test out this copilot guff
+(package! copilot
+  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
+
+(package! copilot-chat
+  :recipe (:host github :repo "chep/copilot-chat.el" :files ("*.el")))
