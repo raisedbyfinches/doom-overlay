@@ -212,3 +212,6 @@
               ("TAB" . 'copilot-accept-completion)
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
+
+;; set the keybinding for transient menu
+(map! :leader :desc "Copilot menu" "d" #'copilot-chat-transient)
