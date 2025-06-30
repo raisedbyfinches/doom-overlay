@@ -3,24 +3,61 @@
 ;; place your private configuration here
 ;; -- Me ------------------------------------------------------------------------
 (setq user-full-name "g"
-      user-mail-address "myogibo@gmail.com")
+      user-mail-address "myogibo@gmail.com"
 
-;; -- Theme ---------------------------------------------------------------------
-(setq doom-theme 'doom-horizon)
+      ;; -- Theme ---------------------------------------------------------------------
+      doom-theme 'doom-horizon
 
-;; fonts
-(setq doom-font (font-spec :family "JetBrains Mono" :size 14 :style "Regular"))
-(setq doom-big-font (font-spec :family "JetBrains Mono" :size 18 :style "Regular"))
-(setq doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14 ))
-(setq doom-symbol-font (font-spec :family "JetBrains Mono" :size 16 :style "Regular"))
+      ;; fonts
+      doom-font (font-spec :family "JetBrains Mono" :size 14 :style "Regular")
+      doom-big-font (font-spec :family "JetBrains Mono" :size 18 :style "Regular")
+      doom-variable-pitch-font (font-spec :family "Noto Sans" :size 14 )
+      doom-symbol-font (font-spec :family "JetBrains Mono" :size 16 :style "Regular")
 
-;; modeline
-(setq doom-modeline-buffer-encoding nil)
-(setq doom-modeline-major-mode-icon nil)
-(setq doom-modeline-height 42)
-(setq find-file-visit-truename t)
+      ;; modeline
+      doom-modeline-buffer-encoding nil
+      doom-modeline-major-mode-icon nil
+      doom-modeline-height 42
+      find-file-visit-truename t
 
-(setq doom-user-dir "/home/g/.config/doom/")
+      doom-user-dir "/home/g/.config/doom/"
+
+      ;; prompts
+      which-key-idle-delay 0.5
+
+      ;; slightly nicer default buffer names
+      doom-fallback-buffer-name "-Doom-"
+      +doom-dashboard-name "Doomboard"
+
+      ;; -- Appearance 2: electric boogaloo  ------------------------------------------
+      fancy-splash-image "~/.config/doom/images/lion-head.png"
+      doom-modeline-major-mode-icon t
+
+      ;; -- vterm ---------------------------------------------------------------------
+      ;; I want the cmake flags to use system vterm whenever it recompiles
+      vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
+
+
+(custom-set-faces!
+  ;; base
+  `(font-lock-comment-face :inherit 'font-lock-comment-face :weight bold)
+  `(font-lock-doc-face :foreground ,(doom-color 'comments) :inherit 'bold-italic)
+  `((line-number-current-line &override) :foreground ,(doom-color 'base4) :inherit 'bold)
+  `(whitespace-space :foreground ,(doom-lighten (doom-color 'bg-alt) 0.05))
+  `(whitespace-newline :foreground ,(doom-color 'bg))
+
+  ;; doom
+  `(doom-dashboard-footer-icon :foreground ,(doom-color 'red))
+  `(doom-dashboard-menu-desc   :foreground ,(doom-color 'yellow))
+  `(doom-dashboard-menu-title  :foreground ,(doom-color 'red))
+  `(doom-dashboard-loaded      :inherit font-lock-comment-face)
+
+  ;; other appearance
+  `(solaire-mode-line-inactive-face :background ,(doom-color 'bg) :foreground ,(doom-color 'bg-alt))
+  `(doom-modeline-icon-inactive :background ,(doom-color 'bg-alt) :foreground ,(doom-color 'bg-alt))
+  `(ivy-posframe :background ,(doom-darken (doom-color 'bg) 0.1))
+  `(company-box-background :background ,(doom-darken (doom-color 'bg) 0.1))
+  `(ein:cell-input-area :background ,(doom-color 'bg-alt)))
 
 
 ;; add extra padding to the modeline to prevent it overflowing
@@ -28,12 +65,6 @@
   (doom-modeline-def-modeline 'main
     '(bar matches buffer-info remote-host buffer-position parrot selection-info)
     '(misc-info minor-modes check input-method buffer-encoding major-mode process vcs "  ")))
-
-;; prompts
-(setq which-key-idle-delay 0.5)
-
-;; whitespace mode
-;;(global-whitespace-mode +1)
 
 ;; -- Basic settings ------------------------------------------------------------
 
@@ -54,20 +85,10 @@
 (add-to-list 'default-frame-alist '(fullscreen . maximized))
 
 
-;; slightly nicer default buffer names
-(setq doom-fallback-buffer-name "-Doom-"
-      +doom-dashboard-name "Doomboard")
-
-;; tab bar settings
-(setq centaur-tabs-height 48)
-(setq centaur-tabs-set-bar 'over)
-(setq centaur-tabs-set-close-button nil)
-(define-key evil-normal-state-map (kbd "g t") 'centaur-tabs-forward)
-(define-key evil-normal-state-map (kbd "g T") 'centaur-tabs-backward)
-
 ;; -- haskell -------------------------------------------------------------------
 (after! lsp-haskell
   (setq lsp-haskell-formatting-provider "fourmolu"))
+
 
 ;; -- Org -----------------------------------------------------------------------
 (add-hook! 'org-mode-hook
@@ -162,8 +183,6 @@
   (map! (:map (ess-mode-map inferior-ess-mode-map) :g ";" #'ess-insert-assign))
   )
 
-;; -- Python --------------------------------------------------------------------
-
 
 ;; -- DOOM ----------------------------------------------------------------------
 (defun doom/diff-init ()
@@ -172,39 +191,8 @@
   (ediff-files (concat doom-user-dir "init.el")
                (concat doom-emacs-dir "static/init.example.el")))
 
-;; -- vterm ---------------------------------------------------------------------
-;; I want the cmake flags to use system vterm whenever it recompiles
-(setq vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=yes")
-
-;; -- Appearance 2: electric boogaloo  ------------------------------------------
-(setq fancy-splash-image "~/.config/doom/images/lion-head.png")
-(setq doom-modeline-major-mode-icon t)
-
-(custom-set-faces!
-  ;; base
-  `(font-lock-comment-face :inherit 'font-lock-comment-face :weight bold)
-  `(font-lock-doc-face :foreground ,(doom-color 'comments) :inherit 'bold-italic)
-  `((line-number-current-line &override) :foreground ,(doom-color 'base4) :inherit 'bold)
-  `(whitespace-space :foreground ,(doom-lighten (doom-color 'bg-alt) 0.05))
-  `(whitespace-newline :foreground ,(doom-color 'bg))
-
-  ;; doom
-  `(doom-dashboard-footer-icon :foreground ,(doom-color 'red))
-  `(doom-dashboard-menu-desc   :foreground ,(doom-color 'yellow))
-  `(doom-dashboard-menu-title  :foreground ,(doom-color 'red))
-  `(doom-dashboard-loaded      :inherit font-lock-comment-face)
-
-  ;; other appearance
-  `(solaire-mode-line-inactive-face :background ,(doom-color 'bg) :foreground ,(doom-color 'bg-alt))
-  `(doom-modeline-icon-inactive :background ,(doom-color 'bg-alt) :foreground ,(doom-color 'bg-alt))
-  `(ivy-posframe :background ,(doom-darken (doom-color 'bg) 0.1))
-  `(company-box-background :background ,(doom-darken (doom-color 'bg) 0.1))
-  `(ein:cell-input-area :background ,(doom-color 'bg-alt) )
-  )
 
 ;; -- assistant -----------------------------------------------------------------
-;; accept completion from copilot and fallback to company
-;; accept completion from copilot and fallback to company
 (use-package! copilot
   :hook (prog-mode . copilot-mode)
   :bind (:map copilot-completion-map
@@ -213,5 +201,4 @@
               ("C-TAB" . 'copilot-accept-completion-by-word)
               ("C-<tab>" . 'copilot-accept-completion-by-word)))
 
-;; set the keybinding for transient menu
 (map! :leader :desc "Copilot menu" "d" #'copilot-chat-transient)
