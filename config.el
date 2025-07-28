@@ -58,6 +58,8 @@
 (display-time-mode 0)
 (pixel-scroll-precision-mode 1)
 
+(add-to-list 'default-frame-alist '(fullscreen . maximized))
+
 
 ;; -- haskell -------------------------------------------------------------------
 (after! lsp-haskell
@@ -72,7 +74,9 @@
   (writegood-mode t)
   (display-line-numbers-mode -1)
   (setq display-line-numbers-type nil)
-  (mixed-pitch-mode 1))
+  (mixed-pitch-mode 1)
+  (xenops-mode t)
+  (xenops-xen-mode t))
 
 (after! org
   ;; latex symbols
@@ -83,6 +87,8 @@
 
   ;; other org config
   (setq
+   xenops-math-image-scale-factor 1.7
+   xenops-reveal-on-entry t
    org-babel-default-header-args '((:session . "none")
                                    (:results . "replace")
                                    (:exports . "code")
