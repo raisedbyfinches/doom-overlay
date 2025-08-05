@@ -74,9 +74,7 @@
   (writegood-mode t)
   (display-line-numbers-mode -1)
   (setq display-line-numbers-type nil)
-  (mixed-pitch-mode 1)
-  (xenops-mode t)
-  (xenops-xen-mode t))
+  (mixed-pitch-mode 1))
 
 (after! org
   ;; latex symbols
@@ -87,8 +85,6 @@
 
   ;; other org config
   (setq
-   xenops-math-image-scale-factor 1.7
-   xenops-reveal-on-entry t
    org-babel-default-header-args '((:session . "none")
                                    (:results . "replace")
                                    (:exports . "code")

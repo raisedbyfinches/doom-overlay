@@ -8,8 +8,3 @@
 
 (package! direnv)
 (package! just-mode)
-(package! janet-mode)
-(package! xenops)
-(package! typst-ts-mode
-  :recipe (:host codeberg
-           :repo "meow_king/typst-ts-mode"))
